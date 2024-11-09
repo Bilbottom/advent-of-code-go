@@ -4,14 +4,31 @@ name: Tests 🧪
 on:
   pull_request:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   tests:
     name: Run go tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-go@v5
-      with: { go-version: "^1.22" } # keep in sync with `go.mod`
-    - run: go test -v ./...
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version: "^1.22" } # keep in sync with `go.mod`
+
+      # Seed `input.data` files in all directories.
+      #
+      # The `input.data` files are required by Go's embed package, but
+      # they only exist locally. This creates some empty files so that
+      # the CI doesn't fail.
+      #
+      # Although the files only need to exist where they are used, it's
+      # easier to create them everywhere.
+      #
+      # Taken from:
+      #
+      # - https://unix.stackexchange.com/questions/94207/recursively-add-a-file-to-all-sub-directories
+      - run: find . -type d -exec touch {}/input.data \;
+
+      # Skip the tests which require the `input.data` files as they need
+      # the files to contain the actual data.
+      - run: go test -v ./... -skip '.*/actual'

@@ -30,6 +30,7 @@ func Test_part2(t *testing.T) {
 		name  string
 		input string
 		want  int
+		skip  bool
 	}{
 		{name: "example", input: example, want: 0},
 		{name: "actual", input: input, want: 0},
