@@ -29,4 +29,6 @@ jobs:
       # - https://unix.stackexchange.com/questions/94207/recursively-add-a-file-to-all-sub-directories
       - run: find . -type d -exec touch {}/input.data \;
 
-      - run: go test -v ./...
+      # Skip the tests which require the `input.data` files as they need
+      # the files to contain the actual data.
+      - run: go test -v ./... -skip '.*/actual'
