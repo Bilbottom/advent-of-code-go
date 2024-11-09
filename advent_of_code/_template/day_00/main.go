@@ -18,10 +18,10 @@ func main() {
 
 func part1(data string) any {
 
-	return ""
+	return 0
 }
 
 func part2(data string) any {
 
-	return ""
+	return 0
 }
